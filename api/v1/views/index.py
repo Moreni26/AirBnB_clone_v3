@@ -1,4 +1,30 @@
 #!/usr/bin/python3
+'''Contains a Flask web application API.
+'''
+import os
+from flask import Flask, jsonify
+from flask_cors import CORS
+
+from models import storage
+from api.v1.views import app_views
+
+
+app = Flask(__name__)
+'''The Flask web application instance.'''
+app_host = os.getenv('HBNB_API_HOST', '0.0.0.0')
+app_port = int(os.getenv('HBNB_API_PORT', '5000'))
+app.url_map.strict_slashes = False
+app.register_blueprint(app_views)
+CORS(app, resources={'/*': {'origins': app_host}})
+root@7853b1fe5fcb:/AirBnB_clone_v3/api/v1# ls
+__init__.py  app.py  views
+root@7853b1fe5fcb:/AirBnB_clone_v3/api/v1# cd views
+root@7853b1fe5fcb:/AirBnB_clone_v3/api/v1/views# ls
+__init__.py  index.py
+root@7853b1fe5fcb:/AirBnB_clone_v3/api/v1/views# vi index.py
+root@7853b1fe5fcb:/AirBnB_clone_v3/api/v1/views# vi __init__.py
+root@7853b1fe5fcb:/AirBnB_clone_v3/api/v1/views# cat index.py
+#!/usr/bin/python3
 '''Contains the index view for the API.'''
 from flask import jsonify
 
@@ -34,3 +60,4 @@ def get_stats():
     for key, value in objects.items():
         objects[key] = storage.count(value)
     return jsonify(objects)
+
